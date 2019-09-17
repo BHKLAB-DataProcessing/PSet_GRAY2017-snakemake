@@ -92,6 +92,8 @@ getGRAYP <-
     names(slope) <- rownames(sensitivity.info)
     sensitivity.profiles <- cbind(sensitivity.profiles, "slope_recomputed"=slope)
    
+    #remove cross referencing cells and drugs
+    
     cells.cross.reference <- read.csv("/pfs/getGRAY2017/DS0_crossreferencingCELLS.txt", header=T, stringsAsFactors=FALSE, sep="\t")
     drugs.cross.reference <- read.csv("/pfs/getGRAY2017/DS0_crossreferencingPERTURBAGENS.txt", header=T, stringsAsFactors=FALSE, sep="\t")
     
