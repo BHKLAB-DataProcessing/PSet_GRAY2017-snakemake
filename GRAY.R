@@ -77,11 +77,14 @@ getGRAYP <-
     load("/pfs/gray2017ProfilesAssemble/profiles.RData")
     
     #compile sensitivity profiles
-               
+    
+    res <- res[rownames(raw.sensitivity),]
+    
     sensitivity.profiles <-  data.frame("aac_recomputed" = as.numeric(res[,"AAC"]), "ic50_recomputed"=as.numeric(res[,"IC50"]), "HS"=as.numeric(res[,"HS"]), "E_inf"=as.numeric(res[,"E_inf"]), "EC50"=as.numeric(res[,"EC50"]))
     
-    sensitivity.profiles$aac_recomputed <- sensitivity.profiles$aac_recomputed
+    sensitivity.profiles$aac_recomputed <- sensitivity.profiles$aac_recomputed/100
     rownames(sensitivity.profiles) <- rownames(res)
+    sensitivity.info <- sensitivity.info[rownames(raw.sensitivity),]
     
     #compute slope and add to sensitivity profiles
                                    
