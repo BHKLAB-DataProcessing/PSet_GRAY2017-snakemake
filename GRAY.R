@@ -90,7 +90,7 @@ getGRAYP <-
       slope <- c(slope, computeSlope(raw.sensitivity[exp, , "Dose"], raw.sensitivity[exp, , "Viability"])) #computeSlope (returns normalized slope of drug response curve)
     }
     
-    names(slope) <- rownames(sensitivity.info)
+    names(slope) <- rownames(raw.sensitivity)
     sensitivity.profiles <- cbind(sensitivity.profiles, "slope_recomputed"=slope)
    
     #remove cross referencing cells and drugs
