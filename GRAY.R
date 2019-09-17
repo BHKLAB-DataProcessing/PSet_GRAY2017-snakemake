@@ -80,7 +80,7 @@ getGRAYP <-
                
     sensitivity.profiles <-  data.frame("aac_recomputed" = as.numeric(res[,"AAC"]), "ic50_recomputed"=as.numeric(res[,"IC50"]), "HS"=as.numeric(res[,"HS"]), "E_inf"=as.numeric(res[,"E_inf"]), "EC50"=as.numeric(res[,"EC50"]))
     
-    sensitivity.profiles$aac_recomputed <- sensitivity.profiles$aac_recomputed/100
+    sensitivity.profiles$aac_recomputed <- sensitivity.profiles$aac_recomputed
     
     #compute slope and add to sensitivity profiles
                                    
