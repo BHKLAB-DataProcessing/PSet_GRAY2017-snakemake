@@ -199,6 +199,26 @@ getGRAYP <-
                                 samples_annotation=rnaseq.sampleinfo)
     
 
+  cellnall <- unionList(rownames(cellineinfo),rnaseq$cellid)
+    
+  newcells <- setdiff(cellnall, rownames(cellineinfo))
+  newRows <- matrix(NA_character_, nrow=length(newcells), ncol=ncol(cellineinfo))
+  # newRows <- cell.info[newcells,]
+
+  rownames(newRows) <- newcells
+  colnames(newRows) <- colnames(cellineinfo)
+  newRows[,"unique.cellid"] <- newcells
+
+  cellineinfo <- rbind(cellineinfo, newRows)
+    
+    
+    
+  cellsPresent <- sort(unionList(sensitivity.info$cellid,rnaseq$cellid))
+  cellineinfo <- cellineinfo[cellsPresent,]
+
+  drugsPresent <- sort(unique(sensitivity.info$drugid))
+
+  druginfo <- druginfo[drugsPresent,]
     
     
   drug_all <- read.csv("/pfs/downAnnotations/drugs_with_ids.csv", na.strings=c("", " ", "NA"))
