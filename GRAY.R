@@ -197,7 +197,7 @@ getGRAYP <-
                                 samples_annotation=rnaseq.sampleinfo)
     
 
-  cellnall <- unionList(rownames(cellineinfo),rnaseq$cellid)
+  cellnall <- unionList(rownames(cellineinfo),rnaseq$cellid, sensitivity.info$cellid)
   newcells <- setdiff(cellnall, rownames(cellineinfo))
   newRows <- matrix(NA_character_, nrow=length(newcells), ncol=ncol(cellineinfo))
   # newRows <- cell.info[newcells,]
