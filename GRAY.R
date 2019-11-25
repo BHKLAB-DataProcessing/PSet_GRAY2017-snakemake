@@ -62,8 +62,6 @@ getGRAYP <-
     cellineinfo[31,"Transcriptional.subtype"] <- "Claudin-low/Basal"
     cellineinfo[31,"ERBB2.status"] <- "Claudin-low/Basal"
     cellineinfo <- cellineinfo[which(!cellineinfo$cellid == "MB157"),]
-    cellineinfo <- rbind(cellineinfo, c("SUM190PT", "breast", "NA", "NA", "0","0","0","1","1","1","0", "1","NA" )) #add new SUM190PT cell line to this table
-    rownames(cellineinfo)[84] <- "SUM190PT"
     
     cellineinfo$cellid <- as.character(matchToIDTable(ids=cellineinfo$cellid, tbl=curationCell, column = "GRAY.cellid", returnColumn = "unique.cellid"))
     rownames(cellineinfo) <-  cellineinfo$cellid
@@ -199,16 +197,16 @@ getGRAYP <-
                                 samples_annotation=rnaseq.sampleinfo)
     
 
-  cellnall <- unionList(rownames(cellineinfo),rnaseq$cellid)
-  newcells <- setdiff(cellnall, rownames(cellineinfo))
-  newRows <- matrix(NA_character_, nrow=length(newcells), ncol=ncol(cellineinfo))
+  #cellnall <- unionList(rownames(cellineinfo),rnaseq$cellid)
+  #newcells <- setdiff(cellnall, rownames(cellineinfo))
+  #newRows <- matrix(NA_character_, nrow=length(newcells), ncol=ncol(cellineinfo))
   # newRows <- cell.info[newcells,]
 
-  rownames(newRows) <- newcells
-  colnames(newRows) <- colnames(cellineinfo)
-  newRows[,"unique.cellid"] <- newcells
+  #rownames(newRows) <- newcells
+  #colnames(newRows) <- colnames(cellineinfo)
+  #newRows[,"unique.cellid"] <- newcells
 
-  cellineinfo <- rbind(cellineinfo, newRows)
+  #cellineinfo <- rbind(cellineinfo, newRows)
     
     
     
