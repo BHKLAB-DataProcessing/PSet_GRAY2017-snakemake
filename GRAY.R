@@ -68,7 +68,7 @@ getGRAYP <-
     cellineinfo$cellid <- as.character(matchToIDTable(ids=cellineinfo$cellid, tbl=curationCell, column = "GRAY.cellid", returnColumn = "unique.cellid"))
     rownames(cellineinfo) <-  cellineinfo$cellid
     
-    curationCell <- curationCell[rownames(cellineinfo),]
+    #curationCell <- curationCell[rownames(cellineinfo),]
     
     
     #published sensitivity (removed published GR data for now)
@@ -199,6 +199,15 @@ getGRAYP <-
                                 samples_annotation=rnaseq.sampleinfo)
     
 
+    
+    
+  drug_all <- read.csv("/pfs/downAnnotations/drugs_with_ids.csv", na.strings=c("", " ", "NA"))
+  drug_all <- drug_all[which(!is.na(drug_all[ , "GRAY.drugid"])),]
+  drug_all <- drug_all[ , c("unique.drugid", "GRAY.drugid","smiles","inchikey","cid","FDA")]
+  rownames(drug_all) <- drug_all[ , "unique.drugid"]
+
+  drug_all <- drug_all[rownames(druginfo),]
+  druginfo[,c("smiles","inchikey","cid","FDA")] <- drug_all[,c("smiles","inchikey","cid","FDA")]
     
     GRAY2017 <- PharmacoSet(molecularProfiles=rnaseq,
                             name="GRAY", 
