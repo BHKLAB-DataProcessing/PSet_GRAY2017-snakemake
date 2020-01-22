@@ -32,7 +32,7 @@ getGRAYP <-
     
     print(RNAseqFolder)
     print(processed_folder)
-    print(toolver)
+    #print(toolver)
     
     
     
