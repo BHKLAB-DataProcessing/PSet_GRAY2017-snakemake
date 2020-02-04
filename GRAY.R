@@ -156,58 +156,61 @@ print(tool_path)
     
     #summarize rnaseq quantifications into expression sets (Kallisto)
                                    
-    summarizeRnaSeq <- function (dir, 
-                                 tool=c("kallisto", "stringtie", "cufflinks", "rsem", "salmon"), 
-                                 features_annotation,
-                                 samples_annotation) {
-      library(Biobase)
-      library(readr)
-      library(tximport)
-      
-      load(features_annotation)
-      tx2gene <- as.data.frame(cbind("transcript"=toil.transcripts$transcript_id, "gene"=toil.transcripts$gene_id))
-      
-      files <- list.files(dir, recursive = TRUE, full.names = T)
-      resFiles <- grep("abundance.h5", files)
-      resFiles <- files[resFiles]
-      length(resFiles)
-      names(resFiles) <- basename(dirname(resFiles))
-      
-      txi <- tximport(resFiles, type="kallisto", tx2gene=tx2gene)
-      head(txi$counts[,1:5])
-      dim(txi$counts)
-      
-      xx <- txi$abundance
-      gene.exp <- Biobase::ExpressionSet(log2(xx + 0.001))
-      fData(gene.exp) <- toil.genes[featureNames(gene.exp),]
-      pData(gene.exp) <- samples_annotation[sampleNames(gene.exp),]
-      annotation(gene.exp) <- "rnaseq"
-      
-      xx <- txi$counts
-      gene.count <- Biobase::ExpressionSet(log2(xx + 1))
-      fData(gene.count) <- toil.genes[featureNames(gene.count),]
-      pData(gene.count) <- samples_annotation[sampleNames(gene.count),]
-      annotation(gene.count) <- "rnaseq"
-      
-      txii <- tximport(resFiles, type="kallisto", txOut=T)
-      
-      xx <- txii$abundance
-      transcript.exp <- Biobase::ExpressionSet(log2(xx[,1:length(resFiles)] + 0.001))
-      fData(transcript.exp) <- toil.transcripts[featureNames(transcript.exp),]
-      pData(transcript.exp) <- samples_annotation[sampleNames(transcript.exp),]
-      annotation(transcript.exp) <- "isoforms"
-      
-      xx <- txii$counts
-      transcript.count <- Biobase::ExpressionSet(log2(xx[,1:length(resFiles)] + 1))
-      fData(transcript.count) <- toil.transcripts[featureNames(transcript.count),]
-      pData(transcript.count) <- samples_annotation[sampleNames(transcript.count),]
-      annotation(transcript.count) <- "isoforms"
-      
-      return(list("rnaseq"=gene.exp, 
-                  "rnaseq.counts"=gene.count, 
-                  "isoforms"=transcript.exp, 
-                  "isoforms.counts"=transcript.count))
-    }
+  summarizeRnaSeq <- function (dir, 
+                             features_annotation,
+                             samples_annotation) {
+  library(Biobase)
+  library(readr)
+  library(tximport)
+  
+  load(features_annotation)
+
+  tx2gene <- as.data.frame(cbind("transcript"=tx2gene$transcripts, "gene"=tx2gene$genes))
+  
+  files <- list.files(dir, recursive = TRUE, full.names = T)
+  resFiles <- grep("abundance.h5", files)
+  resFiles <- files[resFiles]
+  length(resFiles)
+  names(resFiles) <- basename(dirname(resFiles))
+  
+  txi <- tximport(resFiles, type="kallisto", tx2gene=tx2gene, ignoreAfterBar = TRUE)
+  head(txi$counts[,1:5])
+  dim(txi$counts)
+  
+  xx <- txi$abundance
+  gene.exp <- Biobase::ExpressionSet(log2(xx + 0.001))
+  fData(gene.exp) <- features_gene[featureNames(gene.exp),]
+  pData(gene.exp) <- samples_annotation[sampleNames(gene.exp),]
+  annotation(gene.exp) <- "rnaseq"
+  
+  xx <- txi$counts
+  gene.count <- Biobase::ExpressionSet(log2(xx + 1))
+  fData(gene.count) <- features_gene[featureNames(gene.count),]
+  pData(gene.count) <- samples_annotation[sampleNames(gene.count),]
+  annotation(gene.count) <- "rnaseq"
+  
+  txii <- tximport(resFiles, type="kallisto", txOut=T)
+  
+  xx <- txii$abundance
+  transcript.exp <- Biobase::ExpressionSet(log2(xx[,1:length(resFiles)] + 0.001))
+  featureNames(transcript.exp) <- gsub("\\|.*","",featureNames(transcript.exp))
+  fData(transcript.exp) <- features_transcript[featureNames(transcript.exp),]
+  pData(transcript.exp) <- samples_annotation[sampleNames(transcript.exp),]
+  annotation(transcript.exp) <- "isoforms"
+  
+  xx <- txii$counts
+  transcript.count <- Biobase::ExpressionSet(log2(xx[,1:length(resFiles)] + 1))
+  featureNames(transcript.count) <- gsub("\\|.*","",featureNames(transcript.count))
+  fData(transcript.count) <- features_transcript[featureNames(transcript.count),]
+  pData(transcript.count) <- samples_annotation[sampleNames(transcript.count),]
+  annotation(transcript.count) <- "isoforms"
+  
+  return(list("rnaseq"=gene.exp, 
+              "rnaseq.counts"=gene.count, 
+              "isoforms"=transcript.exp, 
+              "isoforms.counts"=transcript.count))
+}
+
     
 
     rnaseq.sampleinfo <- read.csv(file=paste0(file.path(myDirPrefix, RNAseqFolder, processed_folder, "JRGraySRRMapping.csv")), stringsAsFactors=FALSE, row.names=1)
@@ -271,7 +274,13 @@ print(tool_path)
   drug_all <- drug_all[rownames(druginfo),]
   druginfo[,c("smiles","inchikey","cid","FDA")] <- drug_all[,c("smiles","inchikey","cid","FDA")]
     
-    GRAY2017 <- PharmacoSet(molecularProfiles=rnaseq,
+z <- list()
+
+z <- c(z,c(
+  rnaseq_results
+  )
+)
+    GRAY2017 <- PharmacoSet(molecularProfiles=z,
                             name="GRAY", 
                             cell=cellineinfo, 
                             drug=druginfo, 
