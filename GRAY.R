@@ -228,15 +228,14 @@ print(tool_path)
   }
   
   
-  if (grep(pattern = 'Gencode_v33', x = tool_path[r]) > 0){
-    annot = "/pfs/downAnnotations/Gencode.v33.annotation.RData"
-  } else if (grep(pattern = 'Gencode_v33lift', x = tool_path[1]) > 0){
+  if (grep(pattern = 'lift37', x = tool_path[r]) > 0){
     annot = "/pfs/downAnnotations/Gencode.v33lift37.annotation.RData"
+  } else if (grep(pattern = 'v33', x = tool_path[r]) > 0){
+    annot = "/pfs/downAnnotations/Gencode.v33.annotation.RData"
   } else {
     annot = "/pfs/downAnnotations/Ensembl.v99.annotation.RData"
   }
-  
-  
+ 
   
   rnaseq <- summarizeRnaSeq(dir=file.path(paste0(myDirPrefix, tdir, tool_path[r])),
                             features_annotation=annot,
