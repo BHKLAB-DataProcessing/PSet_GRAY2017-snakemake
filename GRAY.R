@@ -165,16 +165,25 @@ print(tool_path)
   library(tximport)
   
   load(features_annotation)
-   
+    
   tx2gene <- as.data.frame(cbind("transcript"=tx2gene$transcripts, "gene"=tx2gene$genes))
   
   files <- list.files(dir, recursive = TRUE, full.names = T)
-  resFiles <- grep("abundance.h5", files)
+  if(method=="kallisto"){
+  resFiles <- grep("abundance.h5", files
+  }else{
+  resFiles <- grep("quant.sf", files
+  }
   resFiles <- files[resFiles]
   length(resFiles)
   names(resFiles) <- basename(dirname(resFiles))
-    
-  txi <- tximport(resFiles, type="kallisto", tx2gene=tx2gene, ignoreAfterBar = TRUE, ignoreTxVersion = TRUE)
+  
+  if(features_annotation == "/pfs/downAnnotations/Ensembl.v99.annotation.RData" || features_annotation == "/pfs/downAnnotations/Gencode.v33lift37.annotation.RData"){
+  txi <- tximport(resFiles, type=method, tx2gene=tx2gene, ignoreAfterBar = TRUE, ignoreTxVersion = TRUE)
+  } else{
+  txi <- tximport(resFiles, type=method, tx2gene=tx2gene, ignoreAfterBar = TRUE, ignoreTxVersion = FALSE)	  
+  }
+	  
   head(txi$counts[,1:5])
   dim(txi$counts)
   
@@ -194,14 +203,25 @@ print(tool_path)
   
   xx <- txii$abundance
   transcript.exp <- Biobase::ExpressionSet(log2(xx[,1:length(resFiles)] + 0.001))
+  if(features_annotation == "/pfs/downAnnotations/Ensembl.v99.annotation.RData"){
+  featureNames(transcript.exp) <- gsub("\\..*","",featureNames(transcript.exp))
+  fData(transcript.exp) <- features_transcript[featureNames(transcript.exp)[which(featureNames(transcript.exp) %in% rownames(features_transcript))],] 	  
+  }else{
   featureNames(transcript.exp) <- gsub("\\|.*","",featureNames(transcript.exp))
   fData(transcript.exp) <- features_transcript[featureNames(transcript.exp),]
+  }
   pData(transcript.exp) <- samples_annotation[sampleNames(transcript.exp),]
   annotation(transcript.exp) <- "isoforms"
   
   xx <- txii$counts
   transcript.count <- Biobase::ExpressionSet(log2(xx[,1:length(resFiles)] + 1))
+  if(features_annotation == "/pfs/downAnnotations/Ensembl.v99.annotation.RData"){
+  featureNames(transcript.count) <- gsub("\\..*","",featureNames(transcript.count))
+  fData(transcript.count) <- features_transcript[featureNames(transcript.count)[which(featureNames(transcript.count) %in% rownames(features_transcript))],]	  
+  }else{
   featureNames(transcript.count) <- gsub("\\|.*","",featureNames(transcript.count))
+  fData(transcript.count) <- features_transcript[featureNames(transcript.count),]	  
+  }	  
   fData(transcript.count) <- features_transcript[featureNames(transcript.count),]
   pData(transcript.count) <- samples_annotation[sampleNames(transcript.count),]
   annotation(transcript.count) <- "isoforms"
