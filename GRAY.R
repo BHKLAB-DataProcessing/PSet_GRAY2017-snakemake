@@ -235,7 +235,7 @@ print(tool_path)
   } else {
     annot = "/pfs/downAnnotations/Ensembl.v99.annotation.RData"
   }
- 
+    print(annot)
   
   rnaseq <- summarizeRnaSeq(dir=file.path(paste0(myDirPrefix, tdir, tool_path[r])),
                             features_annotation=annot,
