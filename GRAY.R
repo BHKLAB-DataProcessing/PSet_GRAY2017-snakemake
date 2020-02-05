@@ -170,9 +170,9 @@ print(tool_path)
   
   files <- list.files(dir, recursive = TRUE, full.names = T)
   if(method=="kallisto"){
-  resFiles <- grep("abundance.h5", files
+  resFiles <- grep("abundance.h5", files)
   }else{
-  resFiles <- grep("quant.sf", files
+  resFiles <- grep("quant.sf", files)
   }
   resFiles <- files[resFiles]
   length(resFiles)
