@@ -158,13 +158,14 @@ print(tool_path)
                                    
   summarizeRnaSeq <- function (dir, 
                              features_annotation,
-                             samples_annotation) {
+                             samples_annotation,
+			      method) {
   library(Biobase)
   library(readr)
   library(tximport)
   
   load(features_annotation)
-
+   
   tx2gene <- as.data.frame(cbind("transcript"=tx2gene$transcripts, "gene"=tx2gene$genes))
   
   files <- list.files(dir, recursive = TRUE, full.names = T)
@@ -172,8 +173,8 @@ print(tool_path)
   resFiles <- files[resFiles]
   length(resFiles)
   names(resFiles) <- basename(dirname(resFiles))
-  
-  txi <- tximport(resFiles, type="kallisto", tx2gene=tx2gene, ignoreAfterBar = TRUE)
+    
+  txi <- tximport(resFiles, type="kallisto", tx2gene=tx2gene, ignoreAfterBar = TRUE, ignoreTxVersion = TRUE)
   head(txi$counts[,1:5])
   dim(txi$counts)
   
@@ -222,9 +223,11 @@ print(tool_path)
   if (grep(pattern = 'Kallisto', x = tool_path[r]) > 0){
     tdir = "download_gray_rnaseqkallisto/Kallisto/"
     tool <- gsub("\\_.*","", tool_path[r])
+    rnatool="kallisto"	  
   } else {
     tdir = "download_gray_rnaseqsalmon/Salmon/"
     tool <- gsub("\\_.*","", tool_path[r])
+    rnatool="salmon"	  
   }
   
   
@@ -239,7 +242,8 @@ print(tool_path)
   
   rnaseq <- summarizeRnaSeq(dir=file.path(paste0(myDirPrefix, tdir, tool_path[r])),
                             features_annotation=annot,
-                            samples_annotation=rnaseq.sampleinfo)
+                            samples_annotation=rnaseq.sampleinfo,
+			    method = rnatool)
   rnaseq_results <- c(rnaseq_results,c(
     rnaseq <- setNames(rnaseq,  paste0(tool,".", names(rnaseq)))
   )
