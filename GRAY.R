@@ -213,7 +213,7 @@ print(tool_path)
 
     
 
-    rnaseq.sampleinfo <- read.csv(file=paste0(file.path(myDirPrefix, RNAseqFolder, processed_folder, "JRGraySRRMapping.csv")), stringsAsFactors=FALSE, row.names=1)
+    rnaseq.sampleinfo <- read.csv(file="/pfs/downAnnotations/JRGraySRRMapping.csv", stringsAsFactors=FALSE, row.names=1)
     
     rnaseq.sampleinfo[ , "cellid"] <- as.character(matchToIDTable(ids=rnaseq.sampleinfo[ , "cellid"], tbl=curationCell, column = "GRAY.cellid", returnColumn = "unique.cellid"))
    
