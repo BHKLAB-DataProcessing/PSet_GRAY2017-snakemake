@@ -178,7 +178,7 @@ print(tool_path)
   length(resFiles)
   names(resFiles) <- basename(dirname(resFiles))
   
-  if(features_annotation == "/pfs/downAnnotations/Ensembl.v99.annotation.RData" || features_annotation == "/pfs/downAnnotations/Gencode.v33lift37.annotation.RData"){
+  if(features_annotation == "/pfs/downAnnotations/Ensembl.v99.annotation.RData"){
   txi <- tximport(resFiles, type=method, tx2gene=tx2gene, ignoreAfterBar = TRUE, ignoreTxVersion = TRUE)
   } else{
   txi <- tximport(resFiles, type=method, tx2gene=tx2gene, ignoreAfterBar = TRUE, ignoreTxVersion = FALSE)	  
