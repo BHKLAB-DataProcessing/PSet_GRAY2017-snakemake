@@ -199,7 +199,7 @@ print(tool_path)
   pData(gene.count) <- samples_annotation[sampleNames(gene.count),]
   annotation(gene.count) <- "rnaseq"
   
-  txii <- tximport(resFiles, type="kallisto", txOut=T)
+  txii <- tximport(resFiles, type=method, txOut=T)
   
   if(features_annotation == "/pfs/downAnnotations/Ensembl.v99.annotation.RData"){
   #remove non-coding transcripts in ensembl 	  
