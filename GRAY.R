@@ -186,7 +186,7 @@ print(tool_path)
 	  
   head(txi$counts[,1:5])
   dim(txi$counts)
-  
+	  
   xx <- txi$abundance
   gene.exp <- Biobase::ExpressionSet(log2(xx + 0.001))
   fData(gene.exp) <- features_gene[featureNames(gene.exp),]
@@ -201,28 +201,39 @@ print(tool_path)
   
   txii <- tximport(resFiles, type="kallisto", txOut=T)
   
+  if(features_annotation == "/pfs/downAnnotations/Ensembl.v99.annotation.RData"){
+  #remove non-coding transcripts in ensembl 	  
+  rownames(txii$abundance) <-  gsub("\\..*","",rownames(txii$abundance))
+  txii$abundance[which(!rownames(txii$abundance)  %in% features_transcript$transcript_id)]
+  missing_transcript <- rownames(txii$abundance)[which(!rownames(txii$abundance)  %in% features_transcript$transcript_id)]
+  txii$abundance <- txii$abundance [-which(rownames(txii$abundance) %in% missing_transcript),]
+  }
+  	  
   xx <- txii$abundance
   transcript.exp <- Biobase::ExpressionSet(log2(xx[,1:length(resFiles)] + 0.001))
-  if(features_annotation == "/pfs/downAnnotations/Ensembl.v99.annotation.RData"){
-  featureNames(transcript.exp) <- gsub("\\..*","",featureNames(transcript.exp))
-  fData(transcript.exp) <- features_transcript[featureNames(transcript.exp)[which(featureNames(transcript.exp) %in% rownames(features_transcript))],] 	  
-  }else{
+  if(features_annotation == "/pfs/downAnnotations/Gencode.v33.annotation.RData" || features_annotation == "/pfs/downAnnotations/Gencode.v33lift37.annotation.RData"){
   featureNames(transcript.exp) <- gsub("\\|.*","",featureNames(transcript.exp))
+  fData(transcript.exp) <- features_transcript[featureNames(transcript.exp),]
+  }else{
   fData(transcript.exp) <- features_transcript[featureNames(transcript.exp),]
   }
   pData(transcript.exp) <- samples_annotation[sampleNames(transcript.exp),]
   annotation(transcript.exp) <- "isoforms"
   
+	  
+  if(features_annotation == "/pfs/downAnnotations/Ensembl.v99.annotation.RData"){
+  #remove non-coding transcripts in ensembl
+  rownames(txii$counts) <-  gsub("\\..*","",rownames(txii$counts))
+  txii$counts <- txii$counts [-which(rownames(txii$counts) %in% missing_transcript),]	  
+  }	  
   xx <- txii$counts
   transcript.count <- Biobase::ExpressionSet(log2(xx[,1:length(resFiles)] + 1))
-  if(features_annotation == "/pfs/downAnnotations/Ensembl.v99.annotation.RData"){
-  featureNames(transcript.count) <- gsub("\\..*","",featureNames(transcript.count))
-  fData(transcript.count) <- features_transcript[featureNames(transcript.count)[which(featureNames(transcript.count) %in% rownames(features_transcript))],]	  
-  }else{
+  if(features_annotation == "/pfs/downAnnotations/Gencode.v33.annotation.RData" || features_annotation == "/pfs/downAnnotations/Gencode.v33lift37.annotation.RData"){
   featureNames(transcript.count) <- gsub("\\|.*","",featureNames(transcript.count))
-  fData(transcript.count) <- features_transcript[featureNames(transcript.count),]	  
-  }	  
   fData(transcript.count) <- features_transcript[featureNames(transcript.count),]
+  }else{
+  fData(transcript.count) <- features_transcript[featureNames(transcript.count),]
+  }
   pData(transcript.count) <- samples_annotation[sampleNames(transcript.count),]
   annotation(transcript.count) <- "isoforms"
   
