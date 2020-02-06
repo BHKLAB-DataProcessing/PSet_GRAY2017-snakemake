@@ -253,11 +253,11 @@ print(tool_path)
   print(tool_path[r])
   if (grep(pattern = 'Kallisto', x = tool_path[r]) > 0){
     tdir = "download_gray_rnaseqkallisto/Kallisto/"
-    tool <- gsub("\\_.*","", tool_path[r])
+    tool <- sub("(_[^_]+)_.*", "\\1", tool_path[r])	  
     rnatool="kallisto"	  
   } else {
     tdir = "download_gray_rnaseqsalmon/Salmon/"
-    tool <- gsub("\\_.*","", tool_path[r])
+    tool <- sub("(_[^_]+)_.*", "\\1", tool_path[r])
     rnatool="salmon"	  
   }
   
