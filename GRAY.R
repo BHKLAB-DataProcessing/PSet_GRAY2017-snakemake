@@ -488,6 +488,7 @@ return(list("noisy"=noisy, "ok"=acceptable))
 }
 		 
 noisy_out <- filterNoisyCurves2(GRAY2017)
+print("filter done")
 GRAY2017@sensitivity$profiles[noisy_out$noisy, ] <- NA
 		 
 saveRDS(GRAY2017,file="/pfs/out/GRAY_2017.rds")
