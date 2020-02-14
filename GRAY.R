@@ -6,12 +6,9 @@ library(Biobase)
 library(data.table)
 library(reshape2)
 
-getGRAYP <-
-  function (
-    verbose=FALSE,
-    nthread=1){
+
     
-    options(stringsAsFactors=FALSE)
+ options(stringsAsFactors=FALSE)
     
     
  myDirPrefix <- "/pfs/"
@@ -426,11 +423,6 @@ standardize <- standardizeRawDataConcRange(sens.info = sensitivity.info, sens.ra
                             datasetType="sensitivity")
     
     
-    return (GRAY2017)
-    
-  }
-
-getGRAYP(verbose=FALSE, nthread=1)
 		 
 
 #filter noisy curves from PSet (modified function to take into account standardized conc range)
