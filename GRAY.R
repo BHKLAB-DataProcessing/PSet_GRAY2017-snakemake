@@ -252,11 +252,11 @@ print(tool_path)
   print(tool_path[r])
   if (length(grep(pattern = 'Kallisto', x = tool_path[r])) > 0){
     tool <- sub("(_[^_]+)_.*", "\\1", tool_path[r])
-    tdir = paste0("gdsc_rnaseq_",gsub(".","_",tolower(tool), fixed = T), "/",  tool, "/", tool, "/")  
+    tdir = paste0("gray_rnaseq_",gsub(".","_",tolower(tool), fixed = T), "/",  tool, "/", tool, "/")  
     rnatool="kallisto"	  
   } else {
     tool <- sub("(_[^_]+)_.*", "\\1", tool_path[r])
-    tdir = paste0("gdsc_rnaseq_",gsub(".","_",tolower(tool), fixed = T), "/",  tool, "/", tool, "/")
+    tdir = paste0("gray_rnaseq_",gsub(".","_",tolower(tool), fixed = T), "/",  tool, "/", tool, "/")
     rnatool="salmon"	  
   }
   
