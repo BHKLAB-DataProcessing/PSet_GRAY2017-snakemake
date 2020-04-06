@@ -292,13 +292,14 @@ print(tool_path)
   newRows[,"cellid"] <- newcells
 
   cellineinfo <- rbind(cellineinfo, newRows)
-    
-    
-    
   cellsPresent <- sort(unionList(sensitivity.info$cellid,rnaseq$rnaseq$cellid))
   cellineinfo <- cellineinfo[cellsPresent,]
 
-    
+  cellineinfo$tissueid <- curationTissue[rownames(cellineinfo), "unique.tissueid"]
+  cellineinfo$cellid <- rownames(cellineinfo)
+  
+  curationTissue <- curationTissue[rownames(cellineinfo),]
+  curationCell <- curationCell[rownames(cellineinfo),]  
     
   drug_all <- read.csv("/pfs/downAnnotations/drugs_with_ids.csv", na.strings=c("", " ", "NA"))
   drug_all <- drug_all[which(!is.na(drug_all[ , "GRAY.drugid"])),]
@@ -404,6 +405,8 @@ standardizeRawDataConcRange <- function(sens.info, sens.raw){
 
     return(list("sens.info" = sens.info, sens.raw = sens.raw))
 }
+		 
+
 		 
 		 
 #add cellosaurus disease type to cell-info
