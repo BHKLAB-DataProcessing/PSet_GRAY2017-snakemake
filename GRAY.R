@@ -281,8 +281,8 @@ print(tool_path)
   )
 }
     
-
-  cellnall <- unionList(rownames(cellineinfo),rnaseq$rnaseq$cellid, sensitivity.info$cellid)
+  rnaseq_cellid_all <- pData(rnaseq_results[[1]])[,"cellid"]
+  cellnall <- unionList(rownames(cellineinfo),rnaseq_cellid_all, sensitivity.info$cellid)
   newcells <- setdiff(cellnall, rownames(cellineinfo))
   newRows <- matrix(NA_character_, nrow=length(newcells), ncol=ncol(cellineinfo))
   # newRows <- cell.info[newcells,]
@@ -292,7 +292,7 @@ print(tool_path)
   newRows[,"cellid"] <- newcells
 
   cellineinfo <- rbind(cellineinfo, newRows)
-  cellsPresent <- sort(unionList(sensitivity.info$cellid,rnaseq$rnaseq$cellid))
+  cellsPresent <- sort(unionList(sensitivity.info$cellid,rnaseq_cellid_all))
   cellineinfo <- cellineinfo[cellsPresent,]
 
   cellineinfo$tissueid <- curationTissue[rownames(cellineinfo), "unique.tissueid"]
