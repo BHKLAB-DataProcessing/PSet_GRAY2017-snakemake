@@ -246,7 +246,7 @@ print(tool_path)
 
     rnaseq.sampleinfo <- read.csv(file="/pfs/downAnnotations/JRGraySRRMapping.csv", stringsAsFactors=FALSE, row.names=1)
     
-    rnaseq.sampleinfo[ , "unique.cellid"] <- as.character(matchToIDTable(ids=rnaseq.sampleinfo[ , "cellid"], tbl=curationCell, column = "GRAY.cellid", returnColumn = "unique.cellid"))
+    rnaseq.sampleinfo[ , "cellid"] <- as.character(matchToIDTable(ids=rnaseq.sampleinfo[ , "cellid"], tbl=curationCell, column = "GRAY.cellid", returnColumn = "unique.cellid"))
    
     for (r in 1:length(tool_path)){
   print(tool_path[r])
@@ -281,7 +281,7 @@ print(tool_path)
   )
 }
     
-  rnaseq_cellid_all <- pData(rnaseq_results[[1]])[,"unique.cellid"]
+  rnaseq_cellid_all <- pData(rnaseq_results[[1]])[,"cellid"]
   cellnall <- unionList(rownames(cellineinfo),rnaseq_cellid_all, sensitivity.info$cellid)
   newcells <- setdiff(cellnall, rownames(cellineinfo))
   newRows <- matrix(NA_character_, nrow=length(newcells), ncol=ncol(cellineinfo))
