@@ -526,7 +526,7 @@ cellineinfo$Metastatic <- metastatic
 		 
 z <- .converteSetToSE(z)		 
 
-if (standardize == "filtered"){
+if (length(standardize) > 0){
 
  standardize <- standardizeRawDataConcRange(sens.info = sensitivity.info, sens.raw = raw.sensitivity)
  sensitivity.info <- standardize$sens.info
@@ -538,7 +538,7 @@ print("unfiltered PSet")
 }
 		 		 
     GRAY2017 <- PharmacoGx::PharmacoSet(molecularProfiles=z,
-                            name="GRAY2017", 
+                            name="GRAY", 
                             cell=cellineinfo, 
                             drug=druginfo, 
                             sensitivityInfo= sensitivity.info, 
@@ -551,7 +551,7 @@ print("unfiltered PSet")
                             datasetType="sensitivity")
     
     		 
-if (standardize == "filtered"){
+if (length(standardize) > 0){
 
  noisy_out <- filterNoisyCurves2(GRAY2017)
  print("filter done")
