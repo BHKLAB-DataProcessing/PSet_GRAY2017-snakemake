@@ -532,6 +532,9 @@ if (standardize == "filtered"){
  sensitivity.info <- standardize$sens.info
  raw.sensitivity <- standardize$sens.raw
 
+} else {
+print("unfiltered PSet")
+	
 }
 		 		 
     GRAY2017 <- PharmacoGx::PharmacoSet(molecularProfiles=z,
@@ -554,6 +557,9 @@ if (standardize == "filtered"){
  print("filter done")
  GRAY2017@sensitivity$profiles[noisy_out$noisy, ] <- NA
 
+} else {
+print("unfiltered PSet")
+	
 }
 		 
 GRAY2017@annotation$version <- 2		 
