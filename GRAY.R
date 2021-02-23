@@ -564,7 +564,7 @@ print("unfiltered PSet")
 		 
 GRAY2017@annotation$version <- 2		 
 saveRDS(GRAY2017,file="/pfs/out/GRAY2017.rds")
-dataset <- "GRAY"		 
+dataset <- "GRAY2017"		 
 #output ORCESTRA_ID and Pachyderm commit id
 write.table(dataset, file="/pfs/out/dataset.txt", row.names = F ,quote = F, sep = "\t", col.names = F)
 write.table(ORCESTRA_ID, file="/pfs/out/orcestra_id.txt", row.names = F ,quote = F, sep = "\t", col.names = F)				   
