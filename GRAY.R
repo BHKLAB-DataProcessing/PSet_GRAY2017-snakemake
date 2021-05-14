@@ -877,7 +877,7 @@ input_subdomain <- data.frame(
                  "Treatment annotations",
                  "Raw sensitivity data",
                  "Script for data object generation"),
-  "uri" = (
+  "uri" = c(
     "http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE48213",
     transcriptome_link,
     "https://github.com/BHKLAB-Pachyderm/Annotations/blob/master/cell_annotation_all.csv",
