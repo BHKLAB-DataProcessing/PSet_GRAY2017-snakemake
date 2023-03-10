@@ -19,12 +19,12 @@ output_dir <- args[1]
 tools <- args[2]
 transcriptome <- args[3]
 
-data_dir <- "/Users/minoru/Code/bhklab/DataProcessing/PSet/getGRAY2017/data"
-download_dir <- "/Users/minoru/Code/bhklab/DataProcessing/PSet/getGRAY2017/download"
-processed_dir <- "/Users/minoru/Code/bhklab/DataProcessing/PSet/getGRAY2017/processed"
-output_dir <- "/Users/minoru/Code/bhklab/DataProcessing/PSet/getGRAY2017/"
-tools <- "Kallisto-0.46.1"
-transcriptome <- "Gencode_v33"
+# data_dir <- "/Users/minoru/Code/bhklab/DataProcessing/PSet/getGRAY2017/data"
+# download_dir <- "/Users/minoru/Code/bhklab/DataProcessing/PSet/getGRAY2017/download"
+# processed_dir <- "/Users/minoru/Code/bhklab/DataProcessing/PSet/getGRAY2017/processed"
+# output_dir <- "/Users/minoru/Code/bhklab/DataProcessing/PSet/getGRAY2017/"
+# tools <- "Kallisto-0.46.1"
+# transcriptome <- "Gencode_v33"
     
 tools <- gsub("-", "_", tools)
 untar(file.path(download_dir, paste0(tools, ".tar.gz")), exdir = download_dir)
@@ -542,18 +542,18 @@ print("unfiltered PSet")
 	
 }
 		 		 
-    GRAY2017 <- PharmacoGx::PharmacoSet(molecularProfiles=z,
-                            name="GRAY", 
-                            cell=cellineinfo, 
-                            drug=druginfo, 
-                            sensitivityInfo= sensitivity.info, 
-                            sensitivityRaw=raw.sensitivity, 
-                            sensitivityProfiles=sensitivity.profiles, 
-                            sensitivityN=NULL,
-                            curationCell=curationCell, 
-                            curationDrug=curationDrug, 
-                            curationTissue=curationTissue, 
-                            datasetType="sensitivity")
+GRAY2017 <- PharmacoGx::PharmacoSet(molecularProfiles=z,
+                        name="GRAY", 
+                        cell=cellineinfo, 
+                        drug=druginfo, 
+                        sensitivityInfo= sensitivity.info, 
+                        sensitivityRaw=raw.sensitivity, 
+                        sensitivityProfiles=sensitivity.profiles, 
+                        sensitivityN=NULL,
+                        curationCell=curationCell, 
+                        curationDrug=curationDrug, 
+                        curationTissue=curationTissue, 
+                        datasetType="sensitivity")
     
     		 
 if (length(standardize) > 0){
@@ -563,7 +563,7 @@ if (length(standardize) > 0){
  GRAY2017@sensitivity$profiles[noisy_out$noisy, ] <- NA
 
 } else {
-print("unfiltered PSet")
+  print("unfiltered PSet")
 	
 }
 		 
